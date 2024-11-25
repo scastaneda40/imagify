@@ -75,30 +75,36 @@ const Result = () => {
         </div>
       )}
 
-      {isImageLoaded && (
-        <div
-          className="flex gap-2 flex-wrap justify-center text-white text-sm
-    p-0.5 mt-10 rounded-full"
-        >
-          <p
-            onClick={() => {
-              setIsImageLoaded(false);
-            }}
-            className="bg-transparent border border-zinc-900
-        text-black px-8 py-3 rounded-full cursor-pointer"
-          >
-            Generate Another
-          </p>
-          <a
-            href={image}
-            download
-            className="bg-zinc-900 px-10 py-3 rounded-full
-        cursor-pointer"
-          >
-            Download
-          </a>
-        </div>
-      )}
+{isImageLoaded && (
+  <div
+    className="flex gap-2 flex-wrap justify-center text-white text-sm
+p-0.5 mt-10 rounded-full"
+  >
+    <p
+      onClick={() => {
+        setIsImageLoaded(false);
+      }}
+      className="bg-transparent border border-zinc-900
+    text-black px-8 py-3 rounded-full cursor-pointer"
+    >
+      Generate Another
+    </p>
+    <button
+      className="bg-zinc-900 px-10 py-3 rounded-full cursor-pointer"
+      onClick={() => {
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = 'generated-image.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }}
+    >
+      Download
+    </button>
+  </div>
+)}
+
     </motion.form>
   );
 };
