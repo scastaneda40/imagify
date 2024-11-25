@@ -90,18 +90,37 @@ p-0.5 mt-10 rounded-full"
       Generate Another
     </p>
     <button
-      className="bg-zinc-900 px-10 py-3 rounded-full cursor-pointer"
-      onClick={() => {
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = 'generated-image.png';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }}
-    >
-      Download
-    </button>
+  className="bg-zinc-900 px-10 py-3 rounded-full cursor-pointer"
+  onClick={async () => {
+    try {
+      // Fetch the image as a blob
+      const response = await fetch(image);
+      const blob = await response.blob();
+
+      // Create a temporary link element
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+
+      // Set the link href and download attributes
+      link.href = url;
+      link.download = 'generated-image.png'; // Default filename
+
+      // Append the link, trigger click, and remove it
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Release the object URL
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading the image:', error);
+      toast.error('Failed to download the image. Please try again.');
+    }
+  }}
+>
+  Download
+</button>
+
   </div>
 )}
 
